@@ -3,7 +3,7 @@ import axios from "axios";
 export const rapidapi = axios.create({
   baseURL: process.env.RAPIDAPI_URL,
 });
-instance.interceptors.request.use((config) => {
+rapidapi.interceptors.request.use((config) => {
   const rapidapiHost = process.env.RAPIDAPI_HOST;
   const apiKey = process.env.RAPIDAPI_KEY;
   if (rapidapiHost && apiKey) {
