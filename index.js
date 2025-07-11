@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 
+import { router } from "./routes.js";
+
 const app = express();
 const port = process.env.PORT;
 
@@ -11,9 +13,7 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use("/api", [router]);
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
