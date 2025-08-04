@@ -26,3 +26,10 @@ export const submitCode = async (languageId, sourceCode, stdin) => {
     throw error;
   }
 };
+
+export const errorHandler = (res, error) => {
+  const {
+    response: { status, data },
+  } = error;
+  return res.status(status).json(data);
+};
