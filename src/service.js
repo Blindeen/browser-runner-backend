@@ -1,5 +1,5 @@
-import { rapidapi } from "./config/axios.config.js";
 import { GoogleGenAI } from "@google/genai";
+import { rapidapi } from "./config.js";
 
 const ai = new GoogleGenAI({});
 
@@ -45,11 +45,4 @@ export const sendPrompt = async (model, prompt) => {
   } catch (error) {
     throw error;
   }
-};
-
-export const errorHandler = (res, error) => {
-  const {
-    response: { status, data },
-  } = error;
-  return res.status(status).json(data);
 };

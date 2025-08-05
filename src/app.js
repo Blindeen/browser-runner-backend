@@ -1,21 +1,19 @@
 import express from "express";
 import cors from "cors";
-import "dotenv/config";
 
+import { port, corsOrigin } from "./config.js";
 import { router } from "./routes.js";
 
 const app = express();
-const port = process.env.PORT;
 
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: corsOrigin,
   })
 );
-
 app.use("/api", [router]);
 
 app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
+  console.log(`App's listening and ready to receive a request!`);
 });

@@ -1,4 +1,8 @@
 import axios from "axios";
+import "dotenv/config";
+
+export const port = process.env.PORT;
+export const corsOrigin = process.env.CORS_ORIGIN;
 
 export const rapidapi = axios.create({
   baseURL: process.env.RAPIDAPI_URL,
