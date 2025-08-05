@@ -1,4 +1,7 @@
 import { rapidapi } from "./config/axios.config.js";
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({});
 
 export const getLanguages = async () => {
   try {
@@ -22,6 +25,23 @@ export const submitCode = async (languageId, sourceCode, stdin) => {
       params: params,
     });
     return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const sendPrompt = async (model, prompt) => {
+  try {
+    const { text } = await ai.models.generateContent({
+      model: model,
+      contents: prompt,
+      config: {
+        thinkingConfig: {
+          thinkingBudget: 0,
+        },
+      },
+    });
+    return text;
   } catch (error) {
     throw error;
   }

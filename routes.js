@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { GoogleGenAI } from "@google/genai";
-
-import { getLanguages, submitCode, errorHandler } from "./rapidapi.service.js";
+import {
+  getLanguages,
+  submitCode,
+  sendPrompt,
+  errorHandler,
+} from "./api.service.js";
 
 export const router = Router();
-const ai = new GoogleGenAI({});
 
 router.get("/languages", async (_, res) => {
   try {
@@ -46,23 +48,17 @@ router.post("/submissions", async (req, res) => {
 router.post("/fix", async (req, res) => {
   const { sourceCode } = req.body;
   if (sourceCode === undefined) {
-    res.status(400).json({ message: "Request body is missing source code." });
-    return;
+    return res
+      .status(400)
+      .json({ message: "Request body is missing source code." });
   }
 
-  const prompt =
-    "Review and correct the following JavaScript code. Provide only the raw, corrected code block without markdown formatting.";
   try {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-lite",
-      contents: `${prompt}\n${sourceCode}`,
-      config: {
-        thinkingConfig: {
-          thinkingBudget: 0,
-        },
-      },
-    });
-    return res.status(200).json({ code: response.text });
+    const prompt = `Review and correct the following JavaScript code. Provide only the raw, corrected code block without markdown formatting.
+    ${sourceCode}`;
+    const responseText = await sendPrompt("gemini-2.5-flash-lite", prompt);
+
+    return res.status(200).json({ code: responseText });
   } catch (error) {
     let message;
     switch (error.status) {
